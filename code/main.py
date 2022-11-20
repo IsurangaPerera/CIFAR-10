@@ -30,8 +30,7 @@ if __name__ == '__main__':
 
         model.network.load_state_dict(checkpoint['net'])
         test_accuracy, correct, total = model.evaluate(test)
-        print("[Test Results] Model Accuracy %f, Total Correct %d, Total Test Samples %d" %
-              (test_accuracy, correct, total))
+        print("[Test Results] Model Accuracy %f, Total Test Samples %d" %(test_accuracy, total))
 
     elif args.mode == 'predict':
         x_test = load_testing_images(args.data_dir)
