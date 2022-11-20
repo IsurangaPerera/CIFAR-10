@@ -31,7 +31,7 @@ class MyModel(object):
         torch.save(state, checkpoint_dir + 'ckpt.pth')
 
     def update_lr(self, epoch, initial_learning_rate):
-        lr = initial_learning_rate / (epoch // 50)
+        lr = initial_learning_rate / ((epoch // 50) + 1)
         for param_group in self.optimizer.param_groups:
             param_group['lr'] = lr
 
@@ -73,7 +73,6 @@ class MyModel(object):
 
     def predict_prob(self, x):
         self.network.eval()
-
         private_loader = torch.utils.data.DataLoader(x, 100, shuffle=False)
         outputs = torch.empty(len(x), 10)
         with torch.no_grad():
