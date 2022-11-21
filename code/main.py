@@ -9,7 +9,7 @@ from Model import MyModel
 
 parser = argparse.ArgumentParser()
 parser.add_argument("mode", help="[train, test, predict]")
-parser.add_argument("data_dir", help="data path")
+parser.add_argument("data_dir", help="data path", default='../data/')
 parser.add_argument("--checkpoint", help=".pth checkpoint file")
 parser.add_argument("--save_dir", help="path to save the results")
 args = parser.parse_args()
