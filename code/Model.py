@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 from torch.optim.swa_utils import SWALR
 from tqdm import tqdm
-
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from Network import ResUnitBlock, ResNetV2Prop
 
 
@@ -29,7 +29,7 @@ class MyModel(object):
             'net': network_state,
             'epoch': epoch,
         }
-        torch.save(state, checkpoint_dir + 'epoch' + epoch + '_ckpt.pth')
+        torch.save(state, checkpoint_dir + 'epoch' + str(epoch) + '_ckpt.pth')
 
     def update_lr(self, epoch, initial_learning_rate):
         lr = initial_learning_rate / ((epoch // 50) + 1)
@@ -44,6 +44,8 @@ class MyModel(object):
         swa_start = 225
         swa_scheduler = SWALR(self.optimizer, swa_lr=0.005)
         train_loader = torch.utils.data.DataLoader(train, batch_size, shuffle=True)
+
+        scheduler = ReduceLROnPlateau(self.optimizer, 'min')
         criterion = nn.CrossEntropyLoss()
 
         for epoch in range(configs['max_epoch']):
