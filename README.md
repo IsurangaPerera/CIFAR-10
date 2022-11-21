@@ -6,6 +6,7 @@
 Additional checkpoints can be located through this Google Drive [Folder](https://drive.google.com/drive/folders/14g2e4Ln6nFZ8VGdg0PkidOBg6928Ae-t?usp=sharing):
 
 # Requirements:
+- Python 3.8.6
 - Nvidia driver >=450
 - Pytorch 1.7
 - tqdm
@@ -14,7 +15,7 @@ Additional checkpoints can be located through this Google Drive [Folder](https:/
 Install packages via via:
 
 ```bash
-pip3 install tqdm scipy sklearn matplotlib
+pip3 install tqdm numpy torch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 tqdm scipy sklearn matplotlib
 ```
 
 
