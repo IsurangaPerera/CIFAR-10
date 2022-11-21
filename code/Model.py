@@ -29,7 +29,7 @@ class MyModel(object):
             'net': network_state,
             'epoch': epoch,
         }
-        torch.save(state, checkpoint_dir + 'ckpt.pth')
+        torch.save(state, checkpoint_dir + 'epoch' + epoch + '_ckpt.pth')
 
     def update_lr(self, epoch, initial_learning_rate):
         lr = initial_learning_rate / ((epoch // 50) + 1)

@@ -22,7 +22,8 @@ if __name__ == '__main__':
 
         train, valid = train_valid_split(train, original_train, train_ratio=1)
         model.train(train, training_configs)
-        model.evaluate(test)
+        test_accuracy, correct, total = model.evaluate(test)
+        print("[Test Results] Model Accuracy %f, Total Test Samples %d" % (test_accuracy, total))
 
     elif args.mode == 'test':
         _, test, _ = load_data(args.data_dir)
@@ -30,7 +31,7 @@ if __name__ == '__main__':
 
         model.network.load_state_dict(checkpoint['net'])
         test_accuracy, correct, total = model.evaluate(test)
-        print("[Test Results] Model Accuracy %f, Total Test Samples %d" %(test_accuracy, total))
+        print("[Test Results] Model Accuracy %f, Total Test Samples %d" % (test_accuracy, total))
 
     elif args.mode == 'predict':
         x_test = load_testing_images(args.data_dir)
