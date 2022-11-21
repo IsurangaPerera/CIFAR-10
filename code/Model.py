@@ -3,6 +3,7 @@ import os
 import torch
 import torch.nn as nn
 from torch.optim.swa_utils import SWALR
+from tqdm import tqdm
 
 from Network import ResUnitBlock, ResNetV2Prop
 
@@ -42,18 +43,20 @@ class MyModel(object):
         batch_size = configs['batch_size']
         swa_start = 225
         swa_scheduler = SWALR(self.optimizer, swa_lr=0.005)
-
+        train_loader = torch.utils.data.DataLoader(train, batch_size, shuffle=True)
         criterion = nn.CrossEntropyLoss()
 
         for epoch in range(configs['max_epoch']):
             self.network.train()
-            for _, (x_train, y_train) in enumerate(
-                    torch.utils.data.DataLoader(train, batch_size, shuffle=True)):
-                self.optimizer.zero_grad()
-                y_preds = self.network(x_train.to('cuda'))
-                loss = criterion(y_preds, y_train.to('cuda'))
-                loss.backward()
-                self.optimizer.step()
+            with tqdm(total=len(train_loader)) as pbar:
+                for _, (x_train, y_train) in enumerate(train_loader):
+                    self.optimizer.zero_grad()
+                    y_preds = self.network(x_train.to('cuda'))
+                    loss = criterion(y_preds, y_train.to('cuda'))
+                    loss.backward()
+                    self.optimizer.step()
+                    pbar.set_description('[Epoch %d/%d] Loss %.2f' % (epoch, configs['max_epoch'], loss))
+                    pbar.update(1)
 
             self.update_lr(epoch, configs['initial_lr'])
             self.checkpoint_model(self.network.state_dict(), self.model_configs['save_dir'], epoch)
