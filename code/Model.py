@@ -82,7 +82,9 @@ class MyModel(object):
         outputs = torch.empty(len(x), 10)
         with torch.no_grad():
             for idx, xi in enumerate(private_loader):
+                xi = xi.reshape((3, 32, 32))
                 output = self.network(xi.float().cuda())
                 outputs[idx * len(output):(idx + 1) * len(output)] = output
 
         return torch.nn.functional.softmax(outputs, dim=1).to('cpu').numpy()
+
