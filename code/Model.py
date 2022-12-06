@@ -81,8 +81,9 @@ class MyModel(object):
         outputs = torch.empty(len(x), 10)
         with torch.no_grad():
             for idx in tqdm(range(x.shape[0])):
-                xi = xi.reshape((3, 32, 32))
-                output = self.network(xi.float().cuda())
+                x_train = x[idx].reshape((3, 32, 32))
+                x_train = torch.tensor(x_train).type(torch.FloatTensor).unsqueeze(0).to('cuda')
+                output = self.network(x_train.float().cuda())
                 outputs[idx * len(output):(idx + 1) * len(output)] = output
 
         return torch.nn.functional.softmax(outputs, dim=1).to('cpu').numpy()
