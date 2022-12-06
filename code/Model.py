@@ -78,13 +78,11 @@ class MyModel(object):
 
     def predict_prob(self, x):
         self.network.eval()
-        private_loader = torch.utils.data.DataLoader(x, 100, shuffle=False)
         outputs = torch.empty(len(x), 10)
         with torch.no_grad():
-            for idx, xi in enumerate(private_loader):
+            for idx in tqdm(range(x.shape[0])):
                 xi = xi.reshape((3, 32, 32))
                 output = self.network(xi.float().cuda())
                 outputs[idx * len(output):(idx + 1) * len(output)] = output
 
         return torch.nn.functional.softmax(outputs, dim=1).to('cpu').numpy()
-
