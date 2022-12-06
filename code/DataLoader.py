@@ -55,7 +55,7 @@ def load_testing_images(data_dir):
         x_test: An numpy array of shape [N, 32, 32, 3].
             (dtype=np.float32)
     """
-    return Dataset(data_dir, transform=ImageUtils.getDefaultTransformation())
+    return np.load('../data/private_test_images.npy')
 
 
 def train_valid_split(trainset, original_trainset, train_ratio=0.8):
